@@ -1,21 +1,27 @@
 import sympy as sp
+import numpy as np
 
-# 定义符号变量 x
-x = sp.symbols("x")
+a = np.array([[1, 3, 1, -4], [-1, -3, 1, 0], [2, 6, 2, -8]])
 
-# 定义表达式
-expr = (x - 100) * (x - 1.111) * (x - 3000.113)
+c = a.T @ a
+result = ""
+for x in c:
+    result += " & ".join(map(str, x)) + " \\\\\n"
+print(result)
+print(np.linalg.matrix_rank(c))
 
-# 展开表达式
-expanded_expr = sp.expand(expr)
+c = a
 
-# 将展开后的表达式转换为多项式形式
-poly_expr = sp.Poly(expanded_expr, x)
+result = ""
+for x in c:
+    result += " & ".join(map(str, x)) + " \\\\\n"
+print(result)
+print(np.linalg.matrix_rank(c))
 
-# 获取所有系数列表，从最高次到最低次
-coeffs = poly_expr.all_coeffs()
+c = a @ a.T
 
-# 输出展开式和系数
-print(expr)
-print(expanded_expr)
-print(" ".join(map(str, coeffs)))
+result = ""
+for x in c:
+    result += " & ".join(map(str, x)) + " \\\\\n"
+print(result)
+print(np.linalg.matrix_rank(c))
