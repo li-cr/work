@@ -1,27 +1,26 @@
-import sympy as sp
-import numpy as np
+import matplotlib.pyplot as plt
+import networkx as nx
 
-a = np.array([[1, 3, 1, -4], [-1, -3, 1, 0], [2, 6, 2, -8]])
+# 创建有向图
+G = nx.DiGraph()
 
-c = a.T @ a
-result = ""
-for x in c:
-    result += " & ".join(map(str, x)) + " \\\\\n"
-print(result)
-print(np.linalg.matrix_rank(c))
+# 添加词语与文档ID的关系
+inverted_index = {
+    "brutus": [1, 2, 3, 11],
+    "caesa": [1, 2, 3, 4, 5, 6],
+    "calpurnia": [2, 3, 4, 5]
+}
 
-c = a
+# 添加节点和边
+for term, docs in inverted_index.items():
+    for doc in docs:
+        G.add_edge(term, f"Doc {doc}")
 
-result = ""
-for x in c:
-    result += " & ".join(map(str, x)) + " \\\\\n"
-print(result)
-print(np.linalg.matrix_rank(c))
+# 设置布局为横向
+pos = nx.spring_layout(G, seed=42, k=2)  # 调整 k 参数让节点横向分布
 
-c = a @ a.T
-
-result = ""
-for x in c:
-    result += " & ".join(map(str, x)) + " \\\\\n"
-print(result)
-print(np.linalg.matrix_rank(c))
+# 绘制图表
+plt.figure(figsize=(10, 5))
+nx.draw(G, pos, with_labels=True, node_color="lightblue", font_size=10, node_size=3000, arrows=True, arrowstyle='->', arrowsize=20)
+plt.title("Inverted Index Graph")
+plt.show()
